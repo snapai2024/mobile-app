@@ -1,7 +1,6 @@
-import { Redirect, Route } from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import HomePage from './features/home/pages/HomePage';
 import '@ionic/react/css/core.css';
 import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
@@ -13,36 +12,22 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 import './theme/variables.css';
-import {useAuthentication} from "./common/hooks/use-authentication";
+
+import {PrivateGuard, PublicGuard} from "./common/router/guards";
+
+import LoginPage from "./features/auth/pages/login-page";
+import HomePage from './features/home/pages/home-page';
 
 setupIonicReact();
 
 const App: React.FC = () => {
-  const { isAuthenticated } = useAuthentication();
-
-  console.log(isAuthenticated());
-
   return (
       <IonApp>
         <IonReactRouter>
-          <IonRouterOutlet>
-            <Route
-                exact
-                path="/protected-home"
-                render={(props) => {
-                    return isAuthenticated() ? <HomePage /> : null
-                }}
-            />
-              <Route
-                  exact
-                  path="/public-home"
-                  render={(props) => {
-                      return <HomePage/>
-                  }}
-              />
-            <Route exact path="/">
-              <Redirect to="/public-home" />
-            </Route>
+          <IonRouterOutlet ionPage>
+              <Redirect exact path="/" to="/home" />
+              <PrivateGuard path="/home" component={HomePage} exact />
+              <PublicGuard path="/login" component={LoginPage} exact />
           </IonRouterOutlet>
         </IonReactRouter>
       </IonApp>

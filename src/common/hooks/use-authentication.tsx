@@ -1,7 +1,9 @@
 import {jwtDecode} from "jwt-decode";
+import {useHistory} from "react-router";
 
 export const useAuthentication = () => {
     const token = localStorage.getItem('accessToken');
+    const history = useHistory();
 
     const isAuthenticated = () => !!token && !isExpired(token)
 
@@ -15,10 +17,12 @@ export const useAuthentication = () => {
         if (!token) return;
 
         localStorage.setItem("accessToken", token);
+        history.push('/home')
     }
 
     const logout = () => {
         localStorage.removeItem("accessToken");
+        history.push('/login')
     }
 
     return {
