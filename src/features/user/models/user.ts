@@ -15,5 +15,6 @@ export interface User {
 }
 
 export interface CreateUserDto extends Omit<User, 'id' | 'uid' | 'role' | 'collections'>{
+    repeatPassword: string;
     roleId: number;
 }

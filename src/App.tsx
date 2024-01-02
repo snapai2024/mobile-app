@@ -17,6 +17,7 @@ import {PrivateGuard, PublicGuard} from "./common/router/guards";
 
 import LoginPage from "./features/auth/pages/login-page";
 import HomePage from './features/home/pages/home-page';
+import RegisterPage from "./features/user/pages/register-page";
 
 setupIonicReact();
 
@@ -28,6 +29,7 @@ const App: React.FC = () => {
               <Redirect exact path="/" to="/home" />
               <PrivateGuard path="/home" component={HomePage} exact />
               <PublicGuard path="/login" component={LoginPage} exact />
+              <PublicGuard path="/register" component={RegisterPage} exact />
           </IonRouterOutlet>
         </IonReactRouter>
       </IonApp>

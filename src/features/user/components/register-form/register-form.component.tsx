@@ -1,26 +1,25 @@
 import React, {FC} from 'react';
-import {AuthCredentials} from "../../models/auth";
 import {useForm} from "react-hook-form";
 import {IonButton, IonInput, IonItem, IonList, IonRouterLink, IonText} from "@ionic/react";
-import {authenticate} from "../../services/api";
-import {useAuthentication} from "../../../../common/hooks/use-authentication";
+import {CreateUserDto} from "../../models/user";
+import {postUser} from "../../services/api";
+import {useHistory} from "react-router";
 
-const LoginForm: FC = (): JSX.Element => {
+const RegisterForm: FC = (): JSX.Element => {
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<AuthCredentials>()
-    const { login } = useAuthentication()
+    } = useForm<CreateUserDto>()
+    const history = useHistory();
 
-
-    const onSubmit = async (data: AuthCredentials) => {
+    const onSubmit = async (data: CreateUserDto) => {
         if (!data) return;
 
-        const result = await authenticate(data);
+        const result = await postUser(data);
 
         if (result) {
-            login(result.token)
+            history.push('/login')
         }
     }
 
@@ -35,15 +34,19 @@ const LoginForm: FC = (): JSX.Element => {
                     <IonInput type="password" label="Mot de passe" {...register("password", { required: true })} />
                     {errors.password && (<IonText color="danger">Le mot de passe est requis.</IonText>)}
                 </IonItem>
+                <IonItem>
+                    <IonInput type="password" label="Répétez mot de passe" {...register("repeatPassword", { required: true })} />
+                    {errors.repeatPassword && (<IonText color="danger">Les mots de passe ne correspondent pas.</IonText>)}
+                </IonItem>
                 <IonButton className="ion-margin-top" type="submit" expand="block">
-                    Connexion
+                    Inscription
                 </IonButton>
                 <IonItem>
-                    <IonText> Pas de compte ? <IonRouterLink href="/register">S'inscrire</IonRouterLink></IonText>
+                    <IonText> Déjà un compte ? <IonRouterLink href="/login">Se connecter</IonRouterLink></IonText>
                 </IonItem>
             </IonList>
         </form>
     );
 };
 
-export default LoginForm;
+export default RegisterForm;
