@@ -1,5 +1,14 @@
 import {Redirect} from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import {
+    IonApp,
+    IonIcon,
+    IonLabel,
+    IonRouterOutlet,
+    IonTabBar,
+    IonTabButton,
+    IonTabs,
+    setupIonicReact
+} from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import '@ionic/react/css/core.css';
 import '@ionic/react/css/normalize.css';
@@ -18,6 +27,7 @@ import {PrivateGuard, PublicGuard} from "./common/router/guards";
 import LoginPage from "./features/auth/pages/login-page";
 import HomePage from './features/home/pages/home-page';
 import RegisterPage from "./features/user/pages/register-page";
+import {apps, camera, library, list, people, playCircle, radio, search} from "ionicons/icons";
 
 setupIonicReact();
 
@@ -25,12 +35,28 @@ const App: React.FC = () => {
   return (
       <IonApp>
         <IonReactRouter>
-          <IonRouterOutlet ionPage>
-              <Redirect exact path="/" to="/home" />
-              <PrivateGuard path="/home" component={HomePage} exact />
-              <PublicGuard path="/login" component={LoginPage} exact />
-              <PublicGuard path="/register" component={RegisterPage} exact />
-          </IonRouterOutlet>
+            <IonTabs>
+                <IonRouterOutlet ionPage>
+                    <Redirect exact path="/" to="/home" />
+                    <PrivateGuard path="/home" component={HomePage} exact />
+                    <PublicGuard path="/login" component={LoginPage} exact />
+                    <PublicGuard path="/register" component={RegisterPage} exact />
+                </IonRouterOutlet>
+                <IonTabBar slot="bottom">
+                    <IonTabButton tab="collections" href="/collections">
+                        <IonIcon icon={list} />
+                        <IonLabel>Collections</IonLabel>
+                    </IonTabButton>
+                    <IonTabButton tab="home" href="/home">
+                        <IonIcon icon={camera} />
+                        <IonLabel>Analyse</IonLabel>
+                    </IonTabButton>
+                    <IonTabButton tab="account" href="/account">
+                        <IonIcon icon={people} />
+                        <IonLabel>Account</IonLabel>
+                    </IonTabButton>
+                </IonTabBar>
+            </IonTabs>
         </IonReactRouter>
       </IonApp>
   );
