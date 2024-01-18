@@ -1,13 +1,17 @@
 import './ExploreContainer.css';
-import {FC} from "react";
+import {FC, useState} from "react";
 import {IonButton} from "@ionic/react";
 import {Camera, CameraResultType} from "@capacitor/camera";
-import {analyseImage} from "../services/api";
-import {b64toBlob} from "../services/file";
+import {analyseImage} from "../../services/api";
+import {b64toBlob} from "../../services/file";
+import LabelsModal from "../LabelsModal/LabelsModal";
+import {Label} from "../../models/label";
 
 interface ContainerProps { }
 
 const ExploreContainer: FC<ContainerProps> = () => {
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+    const [labels, setLabels] = useState<Label[]>([])
 
     const takePicture = async () => {
         const image = await Camera.getPhoto({
@@ -23,14 +27,18 @@ const ExploreContainer: FC<ContainerProps> = () => {
         const formData = new FormData();
         formData.append('file', blob, "image");
 
-        const result = await analyseImage(formData);
+        const result: Label[] = await analyseImage(formData);
 
-        console.log(result);
+        if (result) {
+            setLabels(result);
+            setIsModalOpen(true);
+        }
     }
 
   return (
     <div id="container">
       <IonButton onClick={takePicture}>Analyse image</IonButton>
+        <LabelsModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} labels={labels} />
     </div>
   );
 };
