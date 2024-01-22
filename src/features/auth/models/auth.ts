@@ -1,9 +1,9 @@
-export interface AuthCredentials {
-    email: string;
-    password: string;
+export interface LoginFormData {
+  email?: string;
+  password?: string;
 }
 
-export interface AuthToken {
-    token: string;
-    expires: Date;
+export interface LoginRequest {
+  id?: number;
+  data: LoginFormData;
 }

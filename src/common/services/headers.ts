@@ -1,13 +1,37 @@
-import {AxiosHeaders} from "axios";
+import { RootState } from "../../app/redux/store";
 
-export const getHeaders = (): AxiosHeaders => {
-    const token = localStorage.getItem("accessToken");
+interface HeaderBuilder {
+  prepareAuthorizationHeader(): HeaderBuilder;
 
-    const headers = new AxiosHeaders();
+  build(): Headers;
+}
+
+class _HeaderBuilder implements HeaderBuilder {
+  private readonly headers: Headers;
+  private getState: () => unknown;
+
+  constructor(headers: Headers, getState: () => unknown) {
+    this.headers = headers;
+    this.getState = getState;
+  }
+
+  prepareAuthorizationHeader(): HeaderBuilder {
+    const token = (this.getState() as RootState).authentication.token;
 
     if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
+      this.headers.set("authorization", `Bearer ${token}`);
     }
 
-    return headers;
+    return this;
+  }
+
+  public build(): Headers {
+    return this.headers;
+  }
 }
+
+export const GetHeaderBuilder: (
+  headers: Headers,
+  getState: () => unknown
+) => HeaderBuilder = (headers, getState) =>
+  new _HeaderBuilder(headers, getState);

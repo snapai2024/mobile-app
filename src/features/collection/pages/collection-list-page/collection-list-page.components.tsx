@@ -7,21 +7,14 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { CollectionList } from "../../components/collection-list";
-import { getMyCollections } from "../../../user/services/api";
-import { Collection } from "../../models/collection";
 import { AddCollectionModal } from "../../components/add-collection-modal";
+import { useGetMyCollectionsQuery } from "../../../user/services/api";
 
 const CollectionListPage: FC = () => {
-  const [collections, setCollections] = useState<Collection[]>([]);
+  const { data: collections } = useGetMyCollectionsQuery();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-  useEffect(() => {
-    getMyCollections().then((result) => {
-      setCollections(result);
-    });
-  }, [setCollections]);
 
   if (!collections) return <div> Erreur ! </div>;
 

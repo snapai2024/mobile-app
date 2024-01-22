@@ -1,10 +1,19 @@
-import { apiClient } from "../../../common/services/api";
-import { Collection, CreateCollectionDto } from "../models/collection";
+import { UserRequest } from "@/features/user/models/user";
+import { baseApi, tagTypes } from "../../../common/services/api";
+import { Collection } from "../../collection/models/collection";
 
-export const createCollection = async (
-  data: CreateCollectionDto
-): Promise<Collection> => {
-  const result = await apiClient.post("collection", data);
+export const collectionApi = baseApi.injectEndpoints({
+  endpoints: (builder) => ({
+    postCollection: builder.mutation<Collection, CollectionRequest>({
+      query: (arg: UserRequest) => {
+        return {
+          url: "/collection",
+          method: "POST",
+          body: arg,
+        };
+      },
+      invalidatesTags: tagTypes,
+    }),
+});
 
-  return result.data;
-};
+export const { usePostCollectionMutation } = collectionApi;

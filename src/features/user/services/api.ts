@@ -1,26 +1,32 @@
-import {apiClient} from "../../../common/services/api";
-import {CreateUserDto, User} from "../models/user";
-import {Collection} from "../../collection/models/collection";
+import { baseApi, tagTypes } from "../../../common/services/api";
+import { Collection } from "../../collection/models/collection";
+import { UserModel, UserRequest, UserResponse } from "../models/user";
 
-export const getMyCollections = async (): Promise<Collection[]> => {
-    const result = await apiClient.get(
-        'user/me/collections',
-    );
+export const userApi = baseApi.injectEndpoints({
+  endpoints: (builder) => ({
+    postUser: builder.mutation<UserResponse, UserRequest>({
+      query: (arg: UserRequest) => {
+        return {
+          url: "/user",
+          method: "POST",
+          body: arg,
+        };
+      },
+      invalidatesTags: tagTypes,
+    }),
+    getMe: builder.query<UserResponse, void>({
+      query: () => `/user/me`,
+      transformResponse: (res: { user: UserModel }) => ({ ...res.user }),
+      providesTags: ["user"],
+    }),
+    getMyCollections: builder.query<Collection[], void>({
+      query: () => `/user/reservation`,
+      transformResponse: (res: { reservations: Collection[] }) =>
+        res.reservations.map((elt) => elt),
+      providesTags: ["user"],
+    }),
+  }),
+});
 
-    return result.data.map((item: Collection) => {
-        return {id: item.id, name: item.name, user: item.user, images: item.images}
-    });
-}
-
-export const postUser = async (input: CreateUserDto): Promise<User> => {
-    const result = await apiClient.post(
-        'user',
-        {
-            email: input.email,
-            password: input.password,
-            roleId: 1
-        }
-    );
-
-    return result.data;
-}
+export const { usePostUserMutation, useGetMeQuery, useGetMyCollectionsQuery } =
+  userApi;

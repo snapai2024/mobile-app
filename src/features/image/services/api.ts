@@ -1,23 +1,28 @@
-import {apiClient} from "../../../common/services/api";
-import { Image } from "../models/image";
-import {Label} from "../models/label";
+import { baseApi, tagTypes } from "../../../common/services/api";
 
-export const analyseImage = async (data: FormData): Promise<Label[]> => {
-    const result = await apiClient.post(
-        'image/analyse',
-        data
-    );
+export const imageApi = baseApi.injectEndpoints({
+  endpoints: (builder) => ({
+    postImage: builder.mutation<Image, FormData>({
+      query: (req: FormData) => {
+        return {
+          url: "/image",
+          method: "POST",
+          body: req.data,
+        };
+      },
+      invalidatesTags: tagTypes,
+    }),
+    analyseImage: builder.mutation<Label[], FormData>({
+      query: (req: FormData) => {
+        return {
+          url: "/image/analyse",
+          method: "POST",
+          body: req.data,
+        };
+      },
+      invalidatesTags: tagTypes,
+    }),
+  }),
+});
 
-    return result.data.map((item: Label) => {
-        return {description: item.description, score: Math.round(item.score * 100)}
-    });
-}
-
-export const createImage = async (data: FormData): Promise<Image> => {
-    const result = await apiClient.post(
-        'image',
-        data
-    );
-
-    return result.data;
-}
+export const { usePostImageMutation, useAnalyseImageMutation } = imageApi;
