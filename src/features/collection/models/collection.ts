@@ -1,5 +1,5 @@
 import {User} from "../../user/models/user";
-import {Image} from "../../image/models/image";
+import {Image} from "../../home/models/image";
 
 export interface Collection {
     id: number;

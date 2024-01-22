@@ -1,5 +1,5 @@
 import {Collection} from "../../collection/models/collection";
-import {Label} from "../../home/models/label";
+import {Label} from "./label";
 
 export interface Image {
     id: number;

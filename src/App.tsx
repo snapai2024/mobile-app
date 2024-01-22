@@ -25,9 +25,10 @@ import './theme/variables.css';
 import {PrivateGuard, PublicGuard} from "./common/router/guards";
 
 import LoginPage from "./features/auth/pages/login-page";
-import HomePage from './features/home/pages/home-page';
+import HomePage from './features/image/pages/home-page';
 import RegisterPage from "./features/user/pages/register-page";
-import {apps, camera, library, list, people, playCircle, radio, search} from "ionicons/icons";
+import {camera, list, people} from "ionicons/icons";
+import UserPage from './features/user/pages/user-page/user-page.component';
 
 setupIonicReact();
 
@@ -40,6 +41,7 @@ const App: React.FC = () => {
                     <Redirect exact path="/" to="/home" />
                     <PrivateGuard path="/home" component={HomePage} exact />
                     <PublicGuard path="/login" component={LoginPage} exact />
+                    <PrivateGuard path="/account" component={UserPage} exact />
                     <PublicGuard path="/register" component={RegisterPage} exact />
                 </IonRouterOutlet>
                 <IonTabBar slot="bottom">

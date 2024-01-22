@@ -1,5 +1,5 @@
 import {apiClient} from "../../../common/services/api";
-import { Image } from "../../image/models/image";
+import { Image } from "../models/image";
 import {Label} from "../models/label";
 
 export const analyseImage = async (data: FormData): Promise<Label[]> => {

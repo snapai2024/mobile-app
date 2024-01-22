@@ -16,7 +16,7 @@ import './LabelsModal.css'
 import {Controller, useForm} from "react-hook-form";
 import {getMyCollections} from "../../../user/services/api";
 import {Collection} from "../../../collection/models/collection";
-import {CreateImageDto, Image} from "../../../image/models/image";
+import {CreateImageDto, Image} from "../../models/image";
 import { createImage } from '../../services/api';
 
 interface LabelsModalProps {
