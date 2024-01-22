@@ -16,12 +16,14 @@ import './LabelsModal.css'
 import {Controller, useForm} from "react-hook-form";
 import {getMyCollections} from "../../../user/services/api";
 import {Collection} from "../../../collection/models/collection";
-import {CreateImageDto} from "../../../image/models/image";
+import {CreateImageDto, Image} from "../../../image/models/image";
+import { createImage } from '../../services/api';
 
 interface LabelsModalProps {
     isOpen: boolean
     setIsModalOpen: Dispatch<SetStateAction<boolean>>
     labels: Label[]
+    imageBlob: Blob
 }
 
 const LabelsModal: FC<LabelsModalProps> = (props) => {
@@ -36,13 +38,29 @@ const LabelsModal: FC<LabelsModalProps> = (props) => {
         getMyCollections().then((result) => {
             setCollections(result);
         })
-    }, [])
+    }, [setCollections])
 
     const onSubmit = async (data: CreateImageDto) => {
-        console.log(data);
+        const imageData: CreateImageDto = {
+            name: data.name,
+            description: data.description,
+            collectionId: data.collectionId,
+            labels: props.labels
+        }
+
+        const formData = new FormData();
+        formData.append('image', JSON.stringify(imageData));
+        formData.append('file', props.imageBlob, "image");
+
+        const createdImage: Image = await createImage(formData);
+
+        if (createdImage) {
+            props.setIsModalOpen(false);
+            return;
+        }
     }
 
-    if (!collections) return <div> erreur ! </div>;
+    if (!collections.length) return <div> erreur ! </div>;
 
   return (
       <IonModal isOpen={props.isOpen}>
@@ -78,8 +96,9 @@ const LabelsModal: FC<LabelsModalProps> = (props) => {
                           <Controller
                               name='collectionId'
                               control={control}
-                              render={({ field: { onChange, ...rest}}) => (
-                                  <IonSelect label="Collection" labelPlacement="fixed" multiple={false} onChange={(val) => console.log(val)} {...rest}>
+                              defaultValue={collections[0].id}
+                              render={({ field }) => (
+                                  <IonSelect label="Collection" labelPlacement="fixed" multiple={false} onIonChange={(e) => field.onChange(e)} {...field}>
                                       {
                                           collections.map((collection) => (
                                               <IonSelectOption key={collection.id} value={collection.id}>{collection.name}</IonSelectOption>
