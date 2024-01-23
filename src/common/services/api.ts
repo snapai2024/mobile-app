@@ -6,6 +6,12 @@ export interface Period {
   to: string | undefined;
 }
 
+export interface AttachmentModel {
+  url: string;
+  size: number;
+  type?: string;
+}
+
 export const tagTypes = ["assets", "auth", "user", "collection", "image"];
 
 export const api = createApi({
@@ -18,5 +24,27 @@ export const api = createApi({
     },
   }),
   tagTypes: tagTypes,
-  endpoints: () => ({}),
+  endpoints: (builder) => ({
+    getFile: builder.query<AttachmentModel, string>({
+      async queryFn(path) {
+        const result = await fetch(`http://localhost:5000/file?path=${path}`);
+
+        if (result.status !== 200) return { error: await result.json() };
+
+        const blob: Blob = await result.blob();
+
+        const blobType: string | undefined = blob.type.split("/").at(-1);
+
+        return {
+          data: {
+            url: URL.createObjectURL(blob),
+            size: blob.size,
+            type: blobType,
+          },
+        };
+      },
+    }),
+  }),
 });
+
+export const { useGetFileQuery } = api;

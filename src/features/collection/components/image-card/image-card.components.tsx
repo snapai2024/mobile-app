@@ -11,21 +11,21 @@ import {
   IonGrid,
   IonRow,
 } from "@ionic/react";
+import { useGetFileQuery } from "../../../../common/services/api";
 
 type Props = {
   image: ImageModel;
 };
 
 const ImageCard: FC<Props> = (props) => {
+  const { data: image } = useGetFileQuery(props.image.path);
+
   if (!props.image || !props.image.labels) return;
 
   return (
     <IonCard>
-      <img
-        alt="Silhouette of mountains"
-        src="https://ionicframework.com/docs/img/demos/card-media.png"
-      />
       <IonCardHeader>
+        <img alt={props.image.name} src={image?.url} />
         <IonCardTitle>{props.image.name}</IonCardTitle>
         <IonCardSubtitle>{props.image.description}</IonCardSubtitle>
       </IonCardHeader>
@@ -33,7 +33,7 @@ const ImageCard: FC<Props> = (props) => {
       <IonCardContent>
         <IonGrid>
           {props.image.labels.map((label) => (
-            <IonRow>
+            <IonRow key={label.score}>
               <IonCol size="10">{label.description}</IonCol>
               <IonCol size="2">
                 <IonBadge color="tertiary">
