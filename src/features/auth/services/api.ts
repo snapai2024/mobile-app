@@ -1,14 +1,19 @@
-import {AuthCredentials, AuthToken} from "../models/auth";
-import {apiClient} from "../../../common/services/api";
+import { api, tagTypes } from "../../../common/services/api";
+import { LoginRequest } from "../models/auth";
 
-export const authenticate = async (credentials: AuthCredentials): Promise<AuthToken> => {
-    const result = await apiClient.post(
-        'authenticate',
-        {
-            email: credentials.email,
-            password: credentials.password
-        }
-    );
+export const authenticationApi = api.injectEndpoints({
+  endpoints: (builder) => ({
+    login: builder.mutation<void, LoginRequest>({
+      query: (req: LoginRequest) => {
+        return {
+          url: "/authenticate",
+          method: "POST",
+          body: req.data,
+        };
+      },
+      invalidatesTags: tagTypes,
+    }),
+  }),
+});
 
-    return result.data;
-}
+export const { useLoginMutation } = authenticationApi;

@@ -1,20 +1,26 @@
-import {Collection} from "../../collection/models/collection";
+import { Collection } from "../../collection/models/collection";
 
 interface Role {
-    id: number;
-    name: string;
+  id: number;
+  name: string;
 }
 
-export interface User {
-    id: number;
-    uid: string;
-    email: string;
-    password: string;
-    role: Role;
-    collections: Collection[];
+export interface UserFormData {
+  id?: number;
+  email?: string;
+  password?: string;
+  repeatPassword?: string;
 }
 
-export interface CreateUserDto extends Omit<User, 'id' | 'uid' | 'role' | 'collections'>{
-    repeatPassword: string;
-    roleId: number;
+export interface UserRequest extends Omit<UserFormData, "repeatPassword"> {}
+
+export interface UserResponse extends UserModel {}
+
+export interface UserModel {
+  id: number;
+  uid: string;
+  email: string;
+  password: string;
+  role: Role;
+  collections: Collection[];
 }

@@ -1,11 +1,12 @@
-import {User} from "../../user/models/user";
-import {Image} from "../../home/models/image";
+import { UserModel } from "../../user/models/user";
+import { ImageModel } from "../../image/models/image";
 
 export interface Collection {
-    id: number;
-    name: string;
-    user: User;
-    images: Image[];
+  id: number;
+  name: string;
+  user: UserModel;
+  images: ImageModel[];
 }
 
-export interface CreateCollectionDto extends Omit<Collection, 'id' | 'user' | 'images'> {}
+export interface CollectionRequest
+  extends Omit<Collection, "id" | "user" | "images"> {}
