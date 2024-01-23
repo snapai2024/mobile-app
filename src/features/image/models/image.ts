@@ -1,4 +1,3 @@
-import { Collection } from "../../collection/models/collection";
 import { Label } from "./label";
 
 export interface ImageModel {
@@ -7,13 +6,10 @@ export interface ImageModel {
   description: string;
   path: string;
   labels: Label[];
-  collection: Collection;
-}
-
-export interface ImageFormData
-  extends Omit<ImageModel, "id" | "path" | "collection"> {
   collectionId: number;
 }
+
+export interface ImageFormData extends Omit<ImageModel, "id" | "path"> {}
 
 export interface ImageRequest {
   id?: number;

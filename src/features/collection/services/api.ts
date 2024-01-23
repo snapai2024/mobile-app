@@ -6,6 +6,10 @@ import {
 
 export const collectionApi = api.injectEndpoints({
   endpoints: (builder) => ({
+    getCollectionById: builder.query<Collection, number>({
+      query: (id) => `/collection/${id}`,
+      providesTags: tagTypes,
+    }),
     postCollection: builder.mutation<Collection, CollectionRequest>({
       query: (arg: CollectionRequest) => {
         return {
@@ -19,4 +23,5 @@ export const collectionApi = api.injectEndpoints({
   }),
 });
 
-export const { usePostCollectionMutation } = collectionApi;
+export const { useGetCollectionByIdQuery, usePostCollectionMutation } =
+  collectionApi;

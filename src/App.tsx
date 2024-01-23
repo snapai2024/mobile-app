@@ -30,6 +30,7 @@ import RegisterPage from "./features/user/pages/register-page";
 import { camera, list, people } from "ionicons/icons";
 import UserPage from "./features/user/pages/user-page/user-page.component";
 import { CollectionListPage } from "./features/collection/pages/collection-list-page";
+import { CollectionDetailPage } from "./features/collection/pages/collection-detail-page";
 
 setupIonicReact();
 
@@ -49,6 +50,11 @@ const App: React.FC = () => {
             <PrivateGuard
               path="/collections"
               component={CollectionListPage}
+              exact
+            />
+            <PrivateGuard
+              path="/collections/:collectionId"
+              component={CollectionDetailPage}
               exact
             />
           </IonRouterOutlet>

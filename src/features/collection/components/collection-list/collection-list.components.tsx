@@ -1,20 +1,29 @@
-import { IonItem, IonLabel, IonList } from "@ionic/react";
+import { IonBadge, IonItem, IonLabel, IonList } from "@ionic/react";
 import { FC } from "react";
 import { Collection } from "../../models/collection";
+import { useHistory } from "react-router";
 
 type Props = {
   collections: Collection[];
 };
 
 const CollectionList: FC<Props> = (props) => {
+  const history = useHistory();
+
   return (
-    <IonList lines="full">
-      {props.collections.map((collection) => (
-        <IonItem key={collection.id}>
-          <IonLabel>{collection.name}</IonLabel>
-        </IonItem>
-      ))}
-    </IonList>
+    <>
+      <IonList inset>
+        {props.collections.map((collection) => (
+          <IonItem
+            key={collection.id}
+            onClick={() => history.push(`/collections/${collection.id}`)}
+          >
+            <IonLabel>{collection.name}</IonLabel>
+            <IonBadge color="primary">{collection.images.length}</IonBadge>
+          </IonItem>
+        ))}
+      </IonList>
+    </>
   );
 };
 

@@ -1,16 +1,18 @@
 import "./labels-modal.component.css";
 import { Dispatch, FC, SetStateAction, useEffect } from "react";
 import {
+  IonBadge,
   IonButton,
   IonButtons,
+  IonCol,
   IonContent,
+  IonGrid,
   IonHeader,
   IonInput,
   IonItem,
-  IonLabel,
   IonList,
   IonModal,
-  IonNote,
+  IonRow,
   IonSelect,
   IonSelectOption,
   IonTitle,
@@ -74,16 +76,21 @@ const LabelsModal: FC<LabelsModalProps> = (props) => {
       </IonHeader>
 
       <IonContent>
-        <IonList inset>
-          {props.labels.map((label) => (
-            <IonItem key={label.description}>
-              <IonLabel slot="start">{label.description}</IonLabel>
-              <IonNote slot="end">{Math.floor(label.score * 100)}%</IonNote>
-            </IonItem>
-          ))}
-        </IonList>
-
         <form onSubmit={handleSubmit(onSubmit)}>
+          <IonList inset>
+            <IonGrid>
+              {props.labels.map((label) => (
+                <IonRow>
+                  <IonCol size="10">{label.description}</IonCol>
+                  <IonCol size="2">
+                    <IonBadge color="tertiary">
+                      {Math.floor(label.score * 100)} %
+                    </IonBadge>
+                  </IonCol>
+                </IonRow>
+              ))}
+            </IonGrid>
+          </IonList>
           <IonList inset>
             <IonItem>
               <IonInput label="Nom" {...register("name", { required: true })} />
