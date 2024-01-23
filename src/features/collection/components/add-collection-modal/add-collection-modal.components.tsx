@@ -14,6 +14,7 @@ import { Dispatch, FC, SetStateAction, useEffect } from "react";
 import { CollectionRequest } from "../../models/collection";
 import { useForm } from "react-hook-form";
 import { usePostCollectionMutation } from "../../services/api";
+import { toast } from "react-toastify";
 
 interface Props {
   isOpen: boolean;
@@ -26,7 +27,10 @@ const AddCollectionModal: FC<Props> = (props) => {
     usePostCollectionMutation();
 
   useEffect(() => {
-    if (isSuccess && collection) props.setIsModalOpen(false);
+    if (isSuccess && collection) {
+      props.setIsModalOpen(false);
+      toast.success("Collection enregistrée.");
+    }
   }, [collection]);
 
   const onSubmit = async (data: CollectionRequest) => postCollection(data);

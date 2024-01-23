@@ -32,6 +32,9 @@ import UserPage from "./features/user/pages/user-page/user-page.component";
 import { CollectionListPage } from "./features/collection/pages/collection-list-page";
 import { CollectionDetailPage } from "./features/collection/pages/collection-detail-page";
 
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+
 setupIonicReact();
 
 const App: React.FC = () => {
@@ -74,6 +77,7 @@ const App: React.FC = () => {
           </IonTabBar>
         </IonTabs>
       </IonReactRouter>
+      <ToastContainer />
     </IonApp>
   );
 };

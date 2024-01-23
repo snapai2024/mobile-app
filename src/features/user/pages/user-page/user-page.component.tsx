@@ -1,7 +1,13 @@
+import { IonPage } from "@ionic/react";
 import { FC } from "react";
+import { UserDetail } from "../../components/user-detail";
 
 const UserPage: FC = () => {
-    return <div> User Page </div>
-}
+  return (
+    <IonPage>
+      <UserDetail />
+    </IonPage>
+  );
+};
 
 export default UserPage;
