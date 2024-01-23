@@ -1,7 +1,7 @@
-import { baseApi, tagTypes } from "../../../common/services/api";
+import { api, tagTypes } from "../../../common/services/api";
 import { LoginRequest } from "../models/auth";
 
-export const authenticationApi = baseApi.injectEndpoints({
+export const authenticationApi = api.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<void, LoginRequest>({
       query: (req: LoginRequest) => {

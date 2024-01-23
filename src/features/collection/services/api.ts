@@ -1,11 +1,13 @@
-import { UserRequest } from "@/features/user/models/user";
-import { baseApi, tagTypes } from "../../../common/services/api";
-import { Collection } from "../../collection/models/collection";
+import { api, tagTypes } from "../../../common/services/api";
+import {
+  Collection,
+  CollectionRequest,
+} from "../../collection/models/collection";
 
-export const collectionApi = baseApi.injectEndpoints({
+export const collectionApi = api.injectEndpoints({
   endpoints: (builder) => ({
     postCollection: builder.mutation<Collection, CollectionRequest>({
-      query: (arg: UserRequest) => {
+      query: (arg: CollectionRequest) => {
         return {
           url: "/collection",
           method: "POST",
@@ -14,6 +16,7 @@ export const collectionApi = baseApi.injectEndpoints({
       },
       invalidatesTags: tagTypes,
     }),
+  }),
 });
 
 export const { usePostCollectionMutation } = collectionApi;

@@ -1,5 +1,5 @@
 import "./labels-modal.component.css";
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, FC, SetStateAction, useEffect } from "react";
 import {
   IonButton,
   IonButtons,
@@ -18,10 +18,9 @@ import {
 } from "@ionic/react";
 import { Label } from "../../models/label";
 import { Controller, useForm } from "react-hook-form";
-import { getMyCollections } from "../../../user/services/api";
-import { Collection } from "../../../collection/models/collection";
-import { CreateImageDto, Image } from "../../models/image";
-import { createImage } from "../../services/api";
+import { useGetMyCollectionsQuery } from "../../../user/services/api";
+import { ImageFormData } from "../../models/image";
+import { usePostImageMutation } from "../../services/api";
 
 interface LabelsModalProps {
   isOpen: boolean;
@@ -31,17 +30,16 @@ interface LabelsModalProps {
 }
 
 const LabelsModal: FC<LabelsModalProps> = (props) => {
-  const { register, control, handleSubmit } = useForm<CreateImageDto>();
-  const [collections, setCollections] = useState<Collection[]>([]);
+  const { register, control, handleSubmit } = useForm<ImageFormData>();
+  const { data: myCollections } = useGetMyCollectionsQuery();
+  const [postImage, { data: createdImage, isSuccess }] = usePostImageMutation();
 
   useEffect(() => {
-    getMyCollections().then((result) => {
-      setCollections(result);
-    });
-  }, [setCollections]);
+    if (isSuccess && createdImage) props.setIsModalOpen(false);
+  }, [createdImage]);
 
-  const onSubmit = async (data: CreateImageDto) => {
-    const imageData: CreateImageDto = {
+  const onSubmit = async (data: ImageFormData) => {
+    const imageData: ImageFormData = {
       name: data.name,
       description: data.description,
       collectionId: data.collectionId,
@@ -52,15 +50,10 @@ const LabelsModal: FC<LabelsModalProps> = (props) => {
     formData.append("image", JSON.stringify(imageData));
     formData.append("file", props.imageBlob, "image");
 
-    const createdImage: Image = await createImage(formData);
-
-    if (createdImage) {
-      props.setIsModalOpen(false);
-      return;
-    }
+    postImage({ data: formData });
   };
 
-  if (!collections.length) return <div> erreur ! </div>;
+  if (!myCollections || !myCollections.length || !props.labels) return;
 
   return (
     <IonModal isOpen={props.isOpen}>
@@ -85,7 +78,7 @@ const LabelsModal: FC<LabelsModalProps> = (props) => {
           {props.labels.map((label) => (
             <IonItem key={label.description}>
               <IonLabel slot="start">{label.description}</IonLabel>
-              <IonNote slot="end">{label.score}%</IonNote>
+              <IonNote slot="end">{Math.floor(label.score * 100)}%</IonNote>
             </IonItem>
           ))}
         </IonList>
@@ -93,12 +86,15 @@ const LabelsModal: FC<LabelsModalProps> = (props) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <IonList inset>
             <IonItem>
-              <IonInput label="Nom" {...register("name")} />
-              <IonInput label="Description" {...register("description")} />
+              <IonInput label="Nom" {...register("name", { required: true })} />
+              <IonInput
+                label="Description"
+                {...register("description", { required: true })}
+              />
               <Controller
                 name="collectionId"
                 control={control}
-                defaultValue={collections[0].id}
+                defaultValue={myCollections[0].id}
                 render={({ field }) => (
                   <IonSelect
                     label="Collection"
@@ -107,7 +103,7 @@ const LabelsModal: FC<LabelsModalProps> = (props) => {
                     onIonChange={(e) => field.onChange(e)}
                     {...field}
                   >
-                    {collections.map((collection) => (
+                    {myCollections.map((collection) => (
                       <IonSelectOption
                         key={collection.id}
                         value={collection.id}

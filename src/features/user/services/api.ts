@@ -1,8 +1,8 @@
-import { baseApi, tagTypes } from "../../../common/services/api";
+import { api, tagTypes } from "../../../common/services/api";
 import { Collection } from "../../collection/models/collection";
 import { UserModel, UserRequest, UserResponse } from "../models/user";
 
-export const userApi = baseApi.injectEndpoints({
+export const userApi = api.injectEndpoints({
   endpoints: (builder) => ({
     postUser: builder.mutation<UserResponse, UserRequest>({
       query: (arg: UserRequest) => {
@@ -17,13 +17,11 @@ export const userApi = baseApi.injectEndpoints({
     getMe: builder.query<UserResponse, void>({
       query: () => `/user/me`,
       transformResponse: (res: { user: UserModel }) => ({ ...res.user }),
-      providesTags: ["user"],
+      providesTags: tagTypes,
     }),
     getMyCollections: builder.query<Collection[], void>({
-      query: () => `/user/reservation`,
-      transformResponse: (res: { reservations: Collection[] }) =>
-        res.reservations.map((elt) => elt),
-      providesTags: ["user"],
+      query: () => `/user/me/collections`,
+      providesTags: tagTypes,
     }),
   }),
 });

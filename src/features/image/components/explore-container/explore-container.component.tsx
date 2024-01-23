@@ -1,18 +1,21 @@
 import "./explore-container.component.css";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { IonButton } from "@ionic/react";
 import { Camera, CameraResultType } from "@capacitor/camera";
-import { analyseImage } from "../../services/api";
 import { b64toBlob } from "../../services/file";
 import LabelsModal from "../labels-modal/labels-modal.component";
-import { Label } from "../../models/label";
+import { useAnalyseImageMutation } from "../../services/api";
 
 interface ContainerProps {}
 
 const ExploreContainer: FC<ContainerProps> = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [labels, setLabels] = useState<Label[]>([]);
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
+  const [analyseImage, { data: labels, isSuccess }] = useAnalyseImageMutation();
+
+  useEffect(() => {
+    if (isSuccess && labels) setIsModalOpen(true);
+  }, [labels]);
 
   const takePicture = async () => {
     const image = await Camera.getPhoto({
@@ -30,12 +33,7 @@ const ExploreContainer: FC<ContainerProps> = () => {
 
     setImageBlob(blob);
 
-    const result: Label[] = await analyseImage(formData);
-
-    if (result) {
-      setLabels(result);
-      setIsModalOpen(true);
-    }
+    analyseImage(formData);
   };
 
   return (
@@ -45,7 +43,7 @@ const ExploreContainer: FC<ContainerProps> = () => {
         isOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         imageBlob={imageBlob!}
-        labels={labels}
+        labels={labels!}
       />
     </div>
   );

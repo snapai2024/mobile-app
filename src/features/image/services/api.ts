@@ -1,9 +1,11 @@
-import { baseApi, tagTypes } from "../../../common/services/api";
+import { api, tagTypes } from "../../../common/services/api";
+import { ImageModel, ImageRequest } from "../models/image";
+import { Label } from "../models/label";
 
-export const imageApi = baseApi.injectEndpoints({
+export const imageApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    postImage: builder.mutation<Image, FormData>({
-      query: (req: FormData) => {
+    postImage: builder.mutation<ImageModel, ImageRequest>({
+      query: (req: ImageRequest) => {
         return {
           url: "/image",
           method: "POST",
@@ -17,7 +19,7 @@ export const imageApi = baseApi.injectEndpoints({
         return {
           url: "/image/analyse",
           method: "POST",
-          body: req.data,
+          body: req,
         };
       },
       invalidatesTags: tagTypes,

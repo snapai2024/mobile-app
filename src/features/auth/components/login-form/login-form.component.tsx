@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {
   IonButton,
@@ -10,14 +10,22 @@ import {
 } from "@ionic/react";
 import { LoginFormData, LoginRequest } from "../../models/auth";
 import { useLoginMutation } from "../../services/api";
+import { authenticationActions } from "../../services/auth.slice";
+import { useDispatch } from "react-redux";
 
 const LoginForm: FC = (): JSX.Element => {
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormData>();
-  const [loginPost] = useLoginMutation();
+  const [loginPost, { data, isSuccess }] = useLoginMutation();
+
+  useEffect(() => {
+    if (!isSuccess || !data) return;
+    dispatch(authenticationActions.login(data));
+  }, [isSuccess, data]);
 
   const onSubmit = async (d: LoginFormData) => {
     const { email, password } = d;

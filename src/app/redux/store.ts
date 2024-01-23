@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import { queryMessageHandler } from "./middlewares/queryMessageHandler";
-import { baseApi } from "../../common/services/api";
-import { authenticationReducer } from "../../features/auth/services/authSlice";
+import { api } from "../../common/services/api";
+import { authenticationReducer } from "../../features/auth/services/auth.slice";
 import { authenticationMiddleware } from "../../features/auth/services/middleware";
 
 export const store = configureStore({
@@ -10,11 +10,11 @@ export const store = configureStore({
     getDefaultMiddleware().concat(
       queryMessageHandler,
       authenticationMiddleware,
-      baseApi.middleware
+      api.middleware
     ),
   reducer: {
     authentication: authenticationReducer,
-    [baseApi.reducerPath]: baseApi.reducer,
+    [api.reducerPath]: api.reducer,
   },
 });
 

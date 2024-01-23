@@ -1,6 +1,6 @@
 import { Middleware } from "redux";
 
-import { authenticationActions } from "./authSlice";
+import { authenticationActions } from "./auth.slice";
 
 export const authenticationMiddleware: Middleware =
   () => (next) => (action) => {

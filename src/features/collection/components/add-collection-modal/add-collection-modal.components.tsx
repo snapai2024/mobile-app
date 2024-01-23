@@ -10,10 +10,10 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { Dispatch, FC, SetStateAction } from "react";
-import { Collection, CreateCollectionDto } from "../../models/collection";
+import { Dispatch, FC, SetStateAction, useEffect } from "react";
+import { CollectionRequest } from "../../models/collection";
 import { useForm } from "react-hook-form";
-import { createCollection } from "../../services/api";
+import { usePostCollectionMutation } from "../../services/api";
 
 interface Props {
   isOpen: boolean;
@@ -21,16 +21,15 @@ interface Props {
 }
 
 const AddCollectionModal: FC<Props> = (props) => {
-  const { register, handleSubmit } = useForm<CreateCollectionDto>();
+  const { register, handleSubmit } = useForm<CollectionRequest>();
+  const [postCollection, { data: collection, isSuccess }] =
+    usePostCollectionMutation();
 
-  const onSubmit = async (data: CreateCollectionDto) => {
-    const createdImage: Collection = await createCollection(data);
+  useEffect(() => {
+    if (isSuccess && collection) props.setIsModalOpen(false);
+  }, [collection]);
 
-    if (createdImage) {
-      props.setIsModalOpen(false);
-      return;
-    }
-  };
+  const onSubmit = async (data: CollectionRequest) => postCollection(data);
 
   return (
     <IonModal isOpen={props.isOpen}>
