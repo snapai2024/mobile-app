@@ -1,7 +1,8 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { ImageModel } from "../../../image/models/image";
 import {
   IonBadge,
+  IonButton,
   IonCard,
   IonCardContent,
   IonCardHeader,
@@ -12,6 +13,8 @@ import {
   IonRow,
 } from "@ionic/react";
 import { useGetFileQuery } from "../../../../common/services/api";
+import { useDeleteImageMutation } from "../../../image/services/api";
+import { toast } from "react-toastify";
 
 type Props = {
   image: ImageModel;
@@ -19,6 +22,13 @@ type Props = {
 
 const ImageCard: FC<Props> = (props) => {
   const { data: image } = useGetFileQuery(props.image.path);
+  const [deleteImage, { isSuccess }] = useDeleteImageMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Image supprimée.");
+    }
+  }, [isSuccess]);
 
   if (!props.image || !props.image.labels) return;
 
@@ -43,6 +53,13 @@ const ImageCard: FC<Props> = (props) => {
             </IonRow>
           ))}
         </IonGrid>
+        <IonButton
+          size="small"
+          style={{ width: "100%" }}
+          onClick={() => deleteImage(props.image.id)}
+        >
+          Supprimer
+        </IonButton>
       </IonCardContent>
     </IonCard>
   );
