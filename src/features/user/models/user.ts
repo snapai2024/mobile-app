@@ -12,7 +12,9 @@ export interface UserFormData {
   repeatPassword?: string;
 }
 
-export interface UserRequest extends Omit<UserFormData, "repeatPassword"> {}
+export interface UserRequest extends Omit<UserFormData, "repeatPassword"> {
+  roleId?: number;
+}
 
 export interface UserResponse extends UserModel {}
 

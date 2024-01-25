@@ -23,6 +23,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useGetMyCollectionsQuery } from "../../../user/services/api";
 import { ImageFormData } from "../../models/image";
 import { usePostImageMutation } from "../../services/api";
+import { toast } from "react-toastify";
 
 interface LabelsModalProps {
   isOpen: boolean;
@@ -37,7 +38,10 @@ const LabelsModal: FC<LabelsModalProps> = (props) => {
   const [postImage, { data: createdImage, isSuccess }] = usePostImageMutation();
 
   useEffect(() => {
-    if (isSuccess && createdImage) props.setIsModalOpen(false);
+    if (isSuccess && createdImage) {
+      props.setIsModalOpen(false);
+      toast.success("Image enregistrée.");
+    }
   }, [createdImage]);
 
   const onSubmit = async (data: ImageFormData) => {
@@ -77,10 +81,10 @@ const LabelsModal: FC<LabelsModalProps> = (props) => {
 
       <IonContent>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <IonList inset>
+          <IonList inset style={{ boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }}>
             <IonGrid>
               {props.labels.map((label) => (
-                <IonRow>
+                <IonRow key={label.score}>
                   <IonCol size="10">{label.description}</IonCol>
                   <IonCol size="2">
                     <IonBadge color="tertiary">
@@ -91,7 +95,7 @@ const LabelsModal: FC<LabelsModalProps> = (props) => {
               ))}
             </IonGrid>
           </IonList>
-          <IonList inset>
+          <IonList inset style={{ boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }}>
             <IonItem>
               <IonInput label="Nom" {...register("name", { required: true })} />
               <IonInput

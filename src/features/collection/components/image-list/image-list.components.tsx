@@ -1,4 +1,4 @@
-import { IonList } from "@ionic/react";
+import { IonContent, IonList } from "@ionic/react";
 import { FC } from "react";
 import { ImageModel } from "../../../image/models/image";
 import { ImageCard } from "../image-card";
@@ -9,7 +9,11 @@ type Props = {
 
 const ImageList: FC<Props> = (props) => {
   if (!props.images.length)
-    return <div> Aucune image dans cette collection. </div>;
+    return (
+      <IonContent className="ion-padding">
+        Aucune image dans cette collection.
+      </IonContent>
+    );
 
   return (
     <>

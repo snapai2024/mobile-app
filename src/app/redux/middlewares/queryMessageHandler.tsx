@@ -1,6 +1,6 @@
-import {isFulfilled, isRejectedWithValue} from '@reduxjs/toolkit';
-import {toast} from 'react-toastify';
-import {Middleware} from 'redux';
+import { isFulfilled, isRejectedWithValue } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
+import { Middleware } from "redux";
 
 export type FulfilledActionResponse = {
   data: any;

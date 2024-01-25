@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {
   IonButton,
@@ -10,6 +10,8 @@ import {
 } from "@ionic/react";
 import { usePostUserMutation } from "../../services/api";
 import { UserFormData, UserRequest } from "../../models/user";
+import { toast } from "react-toastify";
+import { useHistory } from "react-router";
 
 const RegisterForm: FC = (): JSX.Element => {
   const {
@@ -17,7 +19,15 @@ const RegisterForm: FC = (): JSX.Element => {
     handleSubmit,
     formState: { errors },
   } = useForm<UserFormData>();
-  const [userPost, { error, isError }] = usePostUserMutation();
+  const [userPost, { isSuccess, isError }] = usePostUserMutation();
+  const history = useHistory();
+
+  useEffect(() => {
+    if (isSuccess) {
+      history.push("/login");
+      toast.success("Vous vous êtes inscrit.");
+    }
+  }, [isSuccess]);
 
   const onSubmit = async (d: UserFormData) => {
     const { email, password } = d;
@@ -25,6 +35,7 @@ const RegisterForm: FC = (): JSX.Element => {
     const data: UserRequest = {
       email,
       password,
+      roleId: 1,
     };
 
     userPost(data);

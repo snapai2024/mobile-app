@@ -12,6 +12,7 @@ import { LoginFormData, LoginRequest } from "../../models/auth";
 import { useLoginMutation } from "../../services/api";
 import { authenticationActions } from "../../services/auth.slice";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const LoginForm: FC = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -20,12 +21,19 @@ const LoginForm: FC = (): JSX.Element => {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormData>();
-  const [loginPost, { data, isSuccess }] = useLoginMutation();
+  const [loginPost, { data, isSuccess, isError, error }] = useLoginMutation();
 
   useEffect(() => {
     if (!isSuccess || !data) return;
     dispatch(authenticationActions.login(data));
+    toast.success("Vous vous êtes connecté.");
   }, [isSuccess, data]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error('Identifiant ou mot de passe incorrect.')
+    }
+  }, [isError])
 
   const onSubmit = async (d: LoginFormData) => {
     const { email, password } = d;

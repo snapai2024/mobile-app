@@ -20,8 +20,17 @@ export const collectionApi = api.injectEndpoints({
       },
       invalidatesTags: tagTypes,
     }),
+    deleteCollection: builder.mutation<Collection, number>({
+      query: (id) => {
+        return {
+          url: `/collection/${id}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: tagTypes,
+    }),
   }),
 });
 
-export const { useGetCollectionByIdQuery, usePostCollectionMutation } =
+export const { useGetCollectionByIdQuery, usePostCollectionMutation, useDeleteCollectionMutation } =
   collectionApi;

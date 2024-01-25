@@ -24,7 +24,20 @@ export const imageApi = api.injectEndpoints({
       },
       invalidatesTags: tagTypes,
     }),
+    deleteImage: builder.mutation<ImageModel, number>({
+      query: (id) => {
+        return {
+          url: `/image/${id}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: tagTypes,
+    }),
   }),
 });
 
-export const { usePostImageMutation, useAnalyseImageMutation } = imageApi;
+export const {
+  usePostImageMutation,
+  useAnalyseImageMutation,
+  useDeleteImageMutation,
+} = imageApi;
