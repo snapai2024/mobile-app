@@ -20,7 +20,7 @@ type Props = {
 
 const CollectionDetail: FC<Props> = (props) => {
   const { data: collection } = useGetCollectionByIdQuery(props.collectionId);
-  const [deleteCollection, { isSuccess }] = useDeleteCollectionMutation();
+  const [deleteCollection, { isSuccess, isError, error }] = useDeleteCollectionMutation();
   const history = useHistory();
 
   useEffect(() => {
@@ -29,6 +29,13 @@ const CollectionDetail: FC<Props> = (props) => {
       toast.success("Collection supprimée.");
     }
   }, [isSuccess])
+
+  useEffect(() => {
+    if (isError) {
+      // @ts-ignore
+      toast.error(error.data.error.message);
+    }
+  }, [isError])
 
   const onDelete = () => {
     if (!collection) return;
