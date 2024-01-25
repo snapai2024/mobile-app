@@ -34,10 +34,15 @@ import { CollectionDetailPage } from "./features/collection/pages/collection-det
 
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { selectIsAuthenticated } from "./features/auth/services/auth.slice";
+import { useSelector } from "react-redux";
 
 setupIonicReact();
 
 const App: React.FC = () => {
+
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+
   return (
     <IonApp>
       <IonReactRouter>
@@ -61,7 +66,7 @@ const App: React.FC = () => {
               exact
             />
           </IonRouterOutlet>
-          <IonTabBar slot="bottom">
+          <IonTabBar slot="bottom" style={{ display: !isAuthenticated ? 'none' : 'flex' }}>
             <IonTabButton tab="collections" href="/collections">
               <IonIcon icon={list} />
               <IonLabel>Collections</IonLabel>
