@@ -3,13 +3,16 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { FC } from "react";
-import { useGetCollectionByIdQuery } from "../../services/api";
+import { FC, useEffect } from "react";
+import { useDeleteCollectionMutation, useGetCollectionByIdQuery } from "../../services/api";
 import { useHistory } from "react-router";
 import { ImageList } from "../image-list";
+import { trashOutline } from "ionicons/icons";
+import { toast } from "react-toastify";
 
 type Props = {
   collectionId: number;
@@ -17,7 +20,21 @@ type Props = {
 
 const CollectionDetail: FC<Props> = (props) => {
   const { data: collection } = useGetCollectionByIdQuery(props.collectionId);
+  const [deleteCollection, { isSuccess }] = useDeleteCollectionMutation();
   const history = useHistory();
+
+  useEffect(() => {
+    if (isSuccess) {
+      history.push('/collections');
+      toast.success("Collection supprimée.");
+    }
+  }, [isSuccess])
+
+  const onDelete = () => {
+    if (!collection) return;
+
+    deleteCollection(collection.id);
+  }
 
   if (!collection) return;
 
@@ -31,6 +48,11 @@ const CollectionDetail: FC<Props> = (props) => {
             </IonButton>
           </IonButtons>
           <IonTitle>{collection.name}</IonTitle>
+          <IonButtons slot="end">
+            <IonButton onClick={onDelete}>
+              <IonIcon slot="icon-only" icon={trashOutline}></IonIcon>
+            </IonButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
 

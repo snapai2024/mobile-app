@@ -19,7 +19,7 @@ const RegisterForm: FC = (): JSX.Element => {
     handleSubmit,
     formState: { errors },
   } = useForm<UserFormData>();
-  const [userPost, { isSuccess }] = usePostUserMutation();
+  const [userPost, { isSuccess, isError }] = usePostUserMutation();
   const history = useHistory();
 
   useEffect(() => {

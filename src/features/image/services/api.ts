@@ -24,7 +24,7 @@ export const imageApi = api.injectEndpoints({
       },
       invalidatesTags: tagTypes,
     }),
-    deleteImage: builder.mutation<void, number>({
+    deleteImage: builder.mutation<ImageModel, number>({
       query: (id) => {
         return {
           url: `/image/${id}`,
