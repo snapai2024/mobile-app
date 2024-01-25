@@ -81,7 +81,7 @@ const LabelsModal: FC<LabelsModalProps> = (props) => {
 
       <IonContent>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <IonList inset>
+          <IonList inset style={{ boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }}>
             <IonGrid>
               {props.labels.map((label) => (
                 <IonRow key={label.score}>
@@ -95,7 +95,7 @@ const LabelsModal: FC<LabelsModalProps> = (props) => {
               ))}
             </IonGrid>
           </IonList>
-          <IonList inset>
+          <IonList inset style={{ boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }}>
             <IonItem>
               <IonInput label="Nom" {...register("name", { required: true })} />
               <IonInput

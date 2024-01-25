@@ -63,10 +63,10 @@ const UserDetail: FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="ion-padding">
+      <IonContent>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <IonList>
-            <IonItem>
+          <IonList inset style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }}>
+            <IonItem lines="none">
               <IonInput 
               label="Adresse email" 
               value={user.email} 
@@ -74,7 +74,7 @@ const UserDetail: FC = () => {
               {...register('email', { disabled: !isEditing })}
               />
             </IonItem>
-            <IonItem>
+            <IonItem lines="none">
               <IonInput
                 type="password"
                 label="Mot de passe"
@@ -85,7 +85,7 @@ const UserDetail: FC = () => {
             </IonItem>
             {
               isEditing && (
-                <IonButton size="small" type="submit" className="ion-margin-top" style={{ width: '100%' }}>
+                <IonButton size="small" type="submit" className="ion-margin">
                   Enregistrer
                 </IonButton>
               )
