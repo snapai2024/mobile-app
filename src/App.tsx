@@ -24,18 +24,18 @@ import "./theme/variables.css";
 
 import { PrivateGuard, PublicGuard } from "./common/router/guards";
 
-import LoginPage from "./features/auth/pages/login-page";
-import HomePage from "./features/image/pages/home-page";
-import RegisterPage from "./features/user/pages/register-page";
+import { LoginPage } from "./features/auth/pages/login-page";
+import { HomePage } from "./features/image/pages/home-page";
+import { RegisterPage } from "./features/user/pages/register-page";
 import { camera, list, people } from "ionicons/icons";
-import UserPage from "./features/user/pages/user-page/user-page.component";
+import { UserPage } from "./features/user/pages/user-page";
 import { CollectionListPage } from "./features/collection/pages/collection-list-page";
 import { CollectionDetailPage } from "./features/collection/pages/collection-detail-page";
-
-import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { selectIsAuthenticated } from "./features/auth/services/auth.slice";
 import { useSelector } from "react-redux";
+
+import "react-toastify/dist/ReactToastify.css";
 
 setupIonicReact();
 

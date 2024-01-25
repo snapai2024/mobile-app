@@ -27,15 +27,9 @@ const UserDetail: FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
+      <IonContent className="ion-padding">
         <form>
-          <IonList inset>
+          <IonList>
             <IonItem>
               <IonInput label="Adresse email" value={user.email} disabled />
             </IonItem>
@@ -49,7 +43,7 @@ const UserDetail: FC = () => {
             </IonItem>
           </IonList>
         </form>
-        <IonButton onClick={() => dispatch(authenticationActions.logout())}>
+        <IonButton className="ion-margin-top" style={{ width: '100%' }} onClick={() => dispatch(authenticationActions.logout())}>
           Se déconnecter
         </IonButton>
       </IonContent>
