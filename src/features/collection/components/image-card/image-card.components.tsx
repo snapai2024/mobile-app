@@ -10,11 +10,14 @@ import {
   IonCardTitle,
   IonCol,
   IonGrid,
+  IonIcon,
   IonRow,
+  IonText,
 } from "@ionic/react";
 import { useGetFileQuery } from "../../../../common/services/api";
 import { useDeleteImageMutation } from "../../../image/services/api";
 import { toast } from "react-toastify";
+import { trashOutline } from "ionicons/icons";
 
 type Props = {
   image: ImageModel;
@@ -36,7 +39,11 @@ const ImageCard: FC<Props> = (props) => {
     <IonCard>
       <IonCardHeader>
         <img alt={props.image.name} src={image?.url} />
-        <IonCardTitle>{props.image.name}</IonCardTitle>
+        <IonCardTitle>
+          <IonText>
+            <h2>{props.image.name}</h2>
+          </IonText>
+          </IonCardTitle>
         <IonCardSubtitle>{props.image.description}</IonCardSubtitle>
       </IonCardHeader>
 
@@ -53,13 +60,16 @@ const ImageCard: FC<Props> = (props) => {
             </IonRow>
           ))}
         </IonGrid>
-        <IonButton
-          size="small"
-          style={{ width: "100%" }}
-          onClick={() => deleteImage(props.image.id)}
+        <div 
+          style={{ width: '100%', display: 'flex', justifyContent: 'center'}}
         >
-          Supprimer
-        </IonButton>
+          <IonButton
+            color="danger"
+            onClick={() => deleteImage(props.image.id)}
+          >
+            <IonIcon slot="icon-only" icon={trashOutline}></IonIcon>
+          </IonButton>
+        </div>
       </IonCardContent>
     </IonCard>
   );

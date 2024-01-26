@@ -37,15 +37,17 @@ const ExploreContainer: FC<ContainerProps> = () => {
   };
 
   return (
-    <div id="container">
-      <IonButton onClick={takePicture}>Analyse image</IonButton>
+    <>
+      <div id="container">
+        <IonButton onClick={takePicture}>Analyse image</IonButton>
+      </div>
       <LabelsModal
         isOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         imageBlob={imageBlob!}
         labels={labels!}
       />
-    </div>
+    </>
   );
 };
 
