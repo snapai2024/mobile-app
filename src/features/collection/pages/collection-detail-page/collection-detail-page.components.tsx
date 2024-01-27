@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import CollectionDetail from "../../components/collection-detail/collection-detail.components";
 
 const CollectionDetailPage: FC = () => {
+  // @ts-ignore
   const { collectionId } = useParams();
 
   if (!collectionId) return;
