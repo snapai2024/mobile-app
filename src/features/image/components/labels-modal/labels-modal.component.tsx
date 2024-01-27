@@ -24,6 +24,7 @@ import { useGetMyCollectionsQuery } from "../../../user/services/api";
 import { ImageFormData } from "../../models/image";
 import { usePostImageMutation } from "../../services/api";
 import { toast } from "react-toastify";
+import {useHistory} from "react-router";
 
 interface LabelsModalProps {
   isOpen: boolean;
@@ -36,11 +37,13 @@ const LabelsModal: FC<LabelsModalProps> = (props) => {
   const { register, control, handleSubmit } = useForm<ImageFormData>();
   const { data: myCollections } = useGetMyCollectionsQuery();
   const [postImage, { data: createdImage, isSuccess }] = usePostImageMutation();
+  const history = useHistory();
 
   useEffect(() => {
     if (isSuccess && createdImage) {
       props.setIsModalOpen(false);
       toast.success("Image enregistrée.");
+      history.push('/collections');
     }
   }, [createdImage]);
 

@@ -1,10 +1,11 @@
 import "./explore-container.component.css";
 import { FC, useEffect, useState } from "react";
-import { IonButton } from "@ionic/react";
+import {IonButton, IonIcon} from "@ionic/react";
 import LabelsModal from "../labels-modal/labels-modal.component";
 import { useAnalyseImageMutation } from "../../services/api";
 import {CameraPreview} from "@ionic-native/camera-preview";
 import {b64toBlob} from "../../services/file";
+import {appsOutline} from "ionicons/icons";
 
 interface ContainerProps {}
 
@@ -19,14 +20,18 @@ const ExploreContainer: FC<ContainerProps> = () => {
 
   useEffect(() => {
     openCamera();
+
+    return () => {
+      CameraPreview.stopCamera();
+    }
   }, [])
 
   const openCamera = async () => {
     let options = {
       x: 0,
-      y: 100,
-      width: window.screen.width / 2,
-      height: window.screen.height / 2,
+      y: 0,
+      width: window.screen.width,
+      height: window.screen.height * 0.75,
       camera: CameraPreview.CAMERA_DIRECTION.BACK,
       toBack: false,
       tapPhoto: true,
@@ -56,9 +61,13 @@ const ExploreContainer: FC<ContainerProps> = () => {
 
   return (
     <>
-      <div style={{ backgroundColor: 'grey' }}>
-        <IonButton onClick={takePicture}>Analyse image</IonButton>
-      </div>
+      <IonButton
+          style={{ width: '70%', position: 'fixed', bottom: '10px', left: 0, right: 0, margin: '0 auto' }}
+          onClick={takePicture}
+          strong={true}>
+        <IonIcon slot="start" icon={appsOutline}></IonIcon>
+        Analyser
+      </IonButton>
       <LabelsModal
         isOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
