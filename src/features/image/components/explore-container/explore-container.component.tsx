@@ -1,11 +1,10 @@
 import "./explore-container.component.css";
 import { FC, useEffect, useState } from "react";
 import { IonButton } from "@ionic/react";
-import { CameraResultType } from "@capacitor/camera";
-import { CameraPreview } from "@awesome-cordova-plugins/camera-preview";
-import { b64toBlob } from "../../services/file";
 import LabelsModal from "../labels-modal/labels-modal.component";
 import { useAnalyseImageMutation } from "../../services/api";
+import {CameraPreview} from "@ionic-native/camera-preview";
+import {b64toBlob} from "../../services/file";
 
 interface ContainerProps {}
 
@@ -15,38 +14,50 @@ const ExploreContainer: FC<ContainerProps> = () => {
   const [analyseImage, { data: labels, isSuccess }] = useAnalyseImageMutation();
 
   useEffect(() => {
-    CameraPreview.startCamera({
-      storeToFile: false,
-    });
-  }, []);
-
-  useEffect(() => {
     if (isSuccess && labels) setIsModalOpen(true);
   }, [labels]);
 
-  // const takePicture = async () => {
-  //   const image = await Camera.getPhoto({
-  //     quality: 90,
-  //     allowEditing: true,
-  //     resultType: CameraResultType.Base64,
-  //   });
+  useEffect(() => {
+    openCamera();
+  }, [])
 
-  //   if (!image) return;
+  const openCamera = async () => {
+    let options = {
+      x: 0,
+      y: 100,
+      width: window.screen.width / 2,
+      height: window.screen.height / 2,
+      camera: CameraPreview.CAMERA_DIRECTION.BACK,
+      toBack: false,
+      tapPhoto: true,
+      tapFocus: false,
+      previewDrag: false,
+      storeToFile: false,
+      disableExifHeaderStripping: false
+    };
 
-  //   const blob = b64toBlob(image.base64String!, "image/png");
+    await CameraPreview.startCamera(options);
+  };
 
-  //   const formData = new FormData();
-  //   formData.append("file", blob, "image");
+  const takePicture = async () => {
+    const res = await CameraPreview.takePicture({width: 500, height: 500, quality: 85});
 
-  //   setImageBlob(blob);
+    const blob = b64toBlob(res, "image/png");
 
-  //   analyseImage(formData);
-  // };
+    const formData = new FormData();
+    formData.append("file", blob, "image");
+
+    setImageBlob(blob);
+
+    analyseImage(formData);
+
+    CameraPreview.stopCamera();
+  }
 
   return (
     <>
-      <div id="container">
-        <IonButton>Analyse image</IonButton>
+      <div style={{ backgroundColor: 'grey' }}>
+        <IonButton onClick={takePicture}>Analyse image</IonButton>
       </div>
       <LabelsModal
         isOpen={isModalOpen}
