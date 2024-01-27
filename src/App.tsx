@@ -31,7 +31,7 @@ import { camera, list, people } from "ionicons/icons";
 import { UserPage } from "./features/user/pages/user-page";
 import { CollectionListPage } from "./features/collection/pages/collection-list-page";
 import { CollectionDetailPage } from "./features/collection/pages/collection-detail-page";
-import { ToastContainer } from "react-toastify";
+import {Flip, ToastContainer} from "react-toastify";
 import { selectIsAuthenticated } from "./features/auth/services/auth.slice";
 import { useSelector } from "react-redux";
 
@@ -73,16 +73,21 @@ const App: React.FC = () => {
             </IonTabButton>
             <IonTabButton tab="home" href="/home">
               <IonIcon icon={camera} />
-              <IonLabel>Analyse</IonLabel>
+              <IonLabel>Analyser</IonLabel>
             </IonTabButton>
             <IonTabButton tab="account" href="/account">
               <IonIcon icon={people} />
-              <IonLabel>Account</IonLabel>
+              <IonLabel>Compte</IonLabel>
             </IonTabButton>
           </IonTabBar>
         </IonTabs>
       </IonReactRouter>
-      <ToastContainer />
+      <ToastContainer
+          autoClose={2000}
+          pauseOnFocusLoss={false}
+          pauseOnHover={false}
+          transition={Flip}
+      />
     </IonApp>
   );
 };

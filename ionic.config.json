@@ -1,7 +1,8 @@
 {
   "name": "dev-mobile",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "cordova": {}
   },
   "type": "react-vite"
 }

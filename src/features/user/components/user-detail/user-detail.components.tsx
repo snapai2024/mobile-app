@@ -92,7 +92,7 @@ const UserDetail: FC = () => {
             }
           </IonList>
         </form>
-        <IonButton style={{ width: '70%', position: 'fixed', bottom: '10px', left: 0, right: 0, margin: '0 auto' }} onClick={() => dispatch(authenticationActions.logout())}>
+        <IonButton color="dark" style={{ width: '70%', position: 'fixed', bottom: '10px', left: 0, right: 0, margin: '0 auto' }} onClick={() => dispatch(authenticationActions.logout())}>
           <IonIcon slot="start" icon={logOut}></IonIcon>
           Se déconnecter
         </IonButton>

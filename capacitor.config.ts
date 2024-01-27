@@ -1,12 +1,23 @@
-import { CapacitorConfig } from '@capacitor/cli';
+import { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'dev-mobile',
-  webDir: 'dist',
+  appId: "io.ionic.starter",
+  appName: "dev-mobile",
+  webDir: "dist",
+  bundledWebRuntime: false,
   server: {
-    androidScheme: 'https'
-  }
+    iosScheme: "http",
+    androidScheme: "http",
+    allowNavigation: ["*"],
+  },
+  android: {
+    allowMixedContent: true,
+  },
+  plugins: {
+      CapacitorHttp: {
+        enabled: false,
+      },
+    },
 };
 
 export default config;

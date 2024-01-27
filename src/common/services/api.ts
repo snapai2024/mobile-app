@@ -16,7 +16,7 @@ export const tagTypes = ["assets", "auth", "user", "collection", "image"];
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: `http://localhost:5000/`,
+    baseUrl: `http://10.0.2.2:5000/`,
     prepareHeaders: (headers, { getState }) => {
       return GetHeaderBuilder(headers, getState)
         .prepareAuthorizationHeader()
@@ -27,7 +27,7 @@ export const api = createApi({
   endpoints: (builder) => ({
     getFile: builder.query<AttachmentModel, string>({
       async queryFn(path) {
-        const result = await fetch(`http://localhost:5000/file?path=${path}`);
+        const result = await fetch(`http://10.0.2.2:5000/file?path=${path}`);
 
         if (result.status !== 200) return { error: await result.json() };
 

@@ -242,3 +242,7 @@ html {
 .modal-wrapper{
   background: red !important;
 }
+
+html, body, .ion-app, .ion-content {
+  background-color: transparent;
+}

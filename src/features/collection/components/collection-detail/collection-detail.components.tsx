@@ -57,7 +57,7 @@ const CollectionDetail: FC<Props> = (props) => {
           <IonTitle>{collection.name}</IonTitle>
           <IonButtons slot="end">
             <IonButton onClick={onDelete}>
-              <IonIcon slot="icon-only" icon={trashOutline}></IonIcon>
+              <IonIcon color="danger" slot="icon-only" icon={trashOutline}></IonIcon>
             </IonButton>
           </IonButtons>
         </IonToolbar>
