@@ -1,6 +1,7 @@
 import React, {FC} from 'react';
-import {IonContent, IonPage} from "@ionic/react";
+import {IonContent, IonImg, IonPage} from "@ionic/react";
 import RegisterForm from "../../components/register-form";
+import Logo from "../../../../../public/assets/logo.png";
 
 const RegisterPage: FC = () => {
     return (
@@ -11,10 +12,12 @@ const RegisterPage: FC = () => {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
+                        flexDirection: 'column',
                         height: '100%',
                     }}
                 >
-                    <RegisterForm />
+                    <IonImg style={{maxHeight: '150px'}} src={Logo} alt="Logo"/>
+                    <RegisterForm/>
                 </div>
             </IonContent>
         </IonPage>
